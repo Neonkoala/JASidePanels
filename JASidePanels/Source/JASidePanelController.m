@@ -29,6 +29,8 @@
 static char ja_kvoContext;
 
 @interface JASidePanelController() {
+    BOOL _leftPanelLoaded;
+    
     CGRect _centerPanelRestingFrame;		
     CGPoint _locationBeforePan;
 }
@@ -133,6 +135,8 @@ static char ja_kvoContext;
 }
 
 - (void)_baseInit {
+    _leftPanelLoaded = NO;
+    
     self.style = JASidePanelSingleActive;
     self.leftGapPercentage = 0.8f;
     self.rightGapPercentage = 0.8f;
@@ -548,6 +552,7 @@ static char ja_kvoContext;
                 if(self.leftPanelAnimating) {
                     [self.leftPanel endAppearanceTransition];
                     [self.leftPanel beginAppearanceTransition:NO animated:YES];
+                    _leftPanelLoaded = YES;
                 } else {
                     [self.rightPanel endAppearanceTransition];
                     [self.rightPanel beginAppearanceTransition:NO animated:YES];
@@ -866,8 +871,11 @@ static char ja_kvoContext;
     if (animated) {
         [self _animateCenterPanel:shouldBounce completion:^(BOOL finished) {
             [self.centerPanel endAppearanceTransition];
-            [self.leftPanel endAppearanceTransition];
+            if(_leftPanelLoaded) {
+                [self.leftPanel endAppearanceTransition];
+            }
             self.leftPanelAnimating = NO;
+            _leftPanelLoaded = YES;
         }];
     } else {
         self.centerPanelContainer.frame = _centerPanelRestingFrame;	
