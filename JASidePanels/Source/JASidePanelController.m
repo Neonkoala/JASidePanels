@@ -883,8 +883,8 @@ static char ja_kvoContext;
         if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
-        [self.leftPanel beginAppearanceTransition:YES animated:animated];
-        [self.centerPanel beginAppearanceTransition:NO animated:animated];
+        [self.leftPanel endAppearanceTransition];
+        [self.centerPanel endAppearanceTransition];
     }
     
     if (self.style == JASidePanelSingleActive) {
