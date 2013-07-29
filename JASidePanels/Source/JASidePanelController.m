@@ -883,6 +883,8 @@ static char ja_kvoContext;
         if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
+        [self.leftPanel beginAppearanceTransition:YES animated:animated];
+        [self.centerPanel beginAppearanceTransition:NO animated:animated];
     }
     
     if (self.style == JASidePanelSingleActive) {
@@ -915,6 +917,8 @@ static char ja_kvoContext;
         if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
+        [self.centerPanel endAppearanceTransition];
+        [self.rightPanel endAppearanceTransition];
     }
     
     if (self.style == JASidePanelSingleActive) {
@@ -961,6 +965,7 @@ static char ja_kvoContext;
         if (self.style == JASidePanelMultipleActive) {
             [self _layoutSideContainers:NO duration:0.0f];
         }
+        [self.centerPanel endAppearanceTransition];
         self.leftPanelContainer.hidden = YES;
         self.rightPanelContainer.hidden = YES;
         [self _unloadPanels];
