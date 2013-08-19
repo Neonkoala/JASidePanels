@@ -183,6 +183,7 @@ static char ja_kvoContext;
     self.state = JASidePanelCenterVisible;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
+    self.centerPanelLoaded = YES;
     [self.view bringSubviewToFront:self.centerPanelContainer];
 }
 
