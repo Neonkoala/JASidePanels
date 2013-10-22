@@ -88,9 +88,6 @@ typedef enum _JASidePanelState {
 // by default applies a black shadow to the container. override in sublcass to change
 - (void)styleContainer:(UIView *)container animate:(BOOL)animate duration:(NSTimeInterval)duration;
 
-// by default applies rounded corners to the panel. override in sublcass to change
-- (void)stylePanel:(UIView *)panel;
-
 #pragma mark - Animation
 
 // the minimum % of total screen width the centerPanel.view must move for panGesture to succeed

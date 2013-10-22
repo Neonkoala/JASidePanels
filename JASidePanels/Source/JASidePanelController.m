@@ -37,7 +37,6 @@ static char ja_kvoContext;
 @property (nonatomic, readwrite) JASidePanelState state;
 @property (nonatomic, assign, readwrite) BOOL leftPanelAnimating;
 @property (nonatomic, assign, readwrite) BOOL rightPanelAnimating;
-@property (nonatomic, assign) BOOL centerPanelLoaded;
 @property (nonatomic, assign) BOOL leftPanelLoaded;
 @property (nonatomic, assign) BOOL rightPanelLoaded;
 @property (nonatomic, weak) UIViewController *visiblePanel;
@@ -183,7 +182,6 @@ static char ja_kvoContext;
     self.state = JASidePanelCenterVisible;
     
     [self _swapCenter:nil previousState:0 with:_centerPanel];
-    self.centerPanelLoaded = YES;
     [self.view bringSubviewToFront:self.centerPanelContainer];
 }
 
@@ -390,7 +388,6 @@ static char ja_kvoContext;
         [previous removeFromParentViewController];
         
         if (next) {
-            self.centerPanelLoaded = NO;
             [self _loadCenterPanelWithPreviousState:previousState];
             [self addChildViewController:next];
             [self.centerPanelContainer addSubview:next.view];
@@ -548,7 +545,6 @@ static char ja_kvoContext;
             } else if(self.state == JASidePanelCenterVisible) {
                 [self.centerPanel endAppearanceTransition];
                 [self.centerPanel beginAppearanceTransition:YES animated:YES];
-                self.centerPanelLoaded = YES;
                 if(self.leftPanelAnimating) {
                     [self.leftPanel endAppearanceTransition];
                     [self.leftPanel beginAppearanceTransition:NO animated:YES];
@@ -949,9 +945,7 @@ static char ja_kvoContext;
     
     if (animated) {
         [self _animateCenterPanel:shouldBounce completion:^(__unused BOOL finished) {
-            if(self.centerPanelLoaded) {
-                [self.centerPanel endAppearanceTransition];
-            }
+            [self.centerPanel endAppearanceTransition];
             
             if(self.leftPanelAnimating) {
                 [self.leftPanel endAppearanceTransition];
@@ -962,7 +956,6 @@ static char ja_kvoContext;
                 self.rightPanelAnimating = NO;
             }
             
-            self.centerPanelLoaded = YES;
             self.leftPanelContainer.hidden = YES;
             self.rightPanelContainer.hidden = YES;
             [self _unloadPanels];
@@ -1127,6 +1120,16 @@ static char ja_kvoContext;
             }];
         }
     }
+}
+
+#pragma mark - Status bar
+
+- (UIViewController *)childViewControllerForStatusBarHidden {
+    return self.visiblePanel;
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle {
+    return self.visiblePanel;
 }
 
 @end
